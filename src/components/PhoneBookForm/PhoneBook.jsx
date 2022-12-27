@@ -1,42 +1,40 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useState } from 'react';
 import { Form, Btn, Input, Label, Title } from './PhoneBookStyle';
 
+export const PhoneBook = ({onSubmit}) => {
+const [name, setName] = useState('');
+const [number,setNumber] = useState('');
 
-export class PhoneBook extends Component{
-  state = {
-    name: '',
-    number: '',
-  };
-  handleChange = e => {
-    const { name,value } = e.currentTarget;
-    this.setState({
-      [name]:value,
-    });
-    };
-
- handleSubmit = event =>{
-    event.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset()
+const handleChange = event => {
+    const { name,value } = event.target;
+   switch (name) {
+    case 'name':
+      return setName(value);
+    case 'number':
+      return setNumber(value);
+    default:
+      return;
+   } 
 };
- 
-  reset = () =>{
-  this.setState({
-    name:'',
-    number:'',
-  });
+const handleSubmit = event =>{
+  event.preventDefault();
+  onSubmit({name, number});
+  reset()
+} 
+const reset = () =>{
+  setName('');
+  setNumber('');
+
   };
-render(){
-  const { name, number } = this.state;
   return (
     <>
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={handleSubmit}>
         <Label>
           <Title>Name</Title>
           <Input
             value={name}
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -46,7 +44,7 @@ render(){
         <Title>Number</Title>
         <Input
             value={number}
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -57,10 +55,10 @@ render(){
           <Btn type='submit'>Add contacts</Btn>
       </Form>
     </>
-  );
-}
+  ); 
 }
 
+
 Form.propTypes={
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
 }
