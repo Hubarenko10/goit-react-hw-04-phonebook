@@ -1,4 +1,4 @@
-import { Component, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PhoneBook } from './PhoneBookForm/PhoneBook';
 import { Section } from './Section/Section';
 import { nanoid } from 'nanoid';
